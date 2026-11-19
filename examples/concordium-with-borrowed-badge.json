@@ -1,0 +1,80 @@
+{
+  "tool": "AirdropGuard",
+  "version": "0.1.0",
+  "checkedAt": "2026-11-19T01:52:39.652Z",
+  "input": {
+    "target": "concordium.com",
+    "badgeId": "Mf22soLh1NuZYFgBK8iSs",
+    "fetchPage": true
+  },
+  "target": {
+    "kind": "domain",
+    "raw": "concordium.com",
+    "url": "https://concordium.com/",
+    "hostname": "concordium.com",
+    "registrableDomain": "concordium.com"
+  },
+  "riskScore": 5,
+  "verdict": "likely legit",
+  "confidence": "high",
+  "summary": "Likely legit. concordium.com is on the official domain list for Concordium (concordium.com). concordium.com has existed for 24 years (registered 2002-04-02 via NameCheap, Inc.).",
+  "evidence": [
+    {
+      "check": "official_domain",
+      "status": "pass",
+      "weight": -35,
+      "detail": "concordium.com is on the official domain list for Concordium (concordium.com).",
+      "data": {
+        "project": "Concordium",
+        "official": "concordium.com"
+      }
+    },
+    {
+      "check": "domain_age",
+      "status": "pass",
+      "weight": -10,
+      "detail": "concordium.com has existed for 24 years (registered 2002-04-02 via NameCheap, Inc.).",
+      "source": "https://rdap.org/domain/concordium.com",
+      "data": {
+        "registered": "2002-04-02T17:49:14Z",
+        "expires": "2027-03-01T04:59:59Z",
+        "registrar": "NameCheap, Inc.",
+        "status": [
+          "client transfer prohibited"
+        ],
+        "ageDays": 8996
+      }
+    },
+    {
+      "check": "phishing_keywords",
+      "status": "pass",
+      "weight": 0,
+      "detail": "No phishing keywords found on the fetched page.",
+      "source": "https://www.concordium.com/"
+    },
+    {
+      "check": "concordium_badge",
+      "status": "warn",
+      "weight": 10,
+      "detail": "Badge Mf22soLh1NuZYFgBK8iSs is valid and Active on mainnet, but its agent card lives on tippingservice.co.uk, not concordium.com. A badge only vouches for its own agent.",
+      "source": "https://agent-registry-mcp.concordium.com/v1/check-badge/Mf22soLh1NuZYFgBK8iSs",
+      "data": {
+        "network": "mainnet",
+        "token_id": 484,
+        "token_address": "Mf22soLh1NuZYFgBK8iSs",
+        "badge_valid": true,
+        "status": "Active",
+        "owner_account": "4DDvjwdcLmTy1Ar9FCKKPMiABrS261TvyXJGr4n4ypuuogXeFF",
+        "agent_uri": "https://tippingservice.co.uk/agents/vigilonmoltbook/.well-known/agent-card.json",
+        "hash_matches_on_chain": true,
+        "badge_embedding": "legacy",
+        "issues": [
+          "warning: embedding",
+          "warning: contracts.cis8",
+          "warning: verify"
+        ],
+        "badge_domain": "tippingservice.co.uk"
+      }
+    }
+  ]
+}

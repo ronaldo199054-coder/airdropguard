@@ -1,0 +1,64 @@
+{
+  "tool": "AirdropGuard",
+  "version": "0.1.0",
+  "checkedAt": "2026-11-19T01:52:41.648Z",
+  "input": {
+    "target": "https://concordium-airdrop-claim.xyz/claim",
+    "fetchPage": true
+  },
+  "target": {
+    "kind": "url",
+    "raw": "https://concordium-airdrop-claim.xyz/claim",
+    "url": "https://concordium-airdrop-claim.xyz/claim",
+    "hostname": "concordium-airdrop-claim.xyz",
+    "registrableDomain": "concordium-airdrop-claim.xyz"
+  },
+  "riskScore": 90,
+  "verdict": "likely scam",
+  "confidence": "high",
+  "summary": "Likely scam. concordium-airdrop-claim.xyz looks like an imitation of Concordium's official domain concordium.com: contains the brand \"concordium\" plus extra words. Domain name contains airdrop bait words: airdrop, claim.",
+  "evidence": [
+    {
+      "check": "lookalike_domain",
+      "status": "fail",
+      "weight": 40,
+      "critical": true,
+      "detail": "concordium-airdrop-claim.xyz looks like an imitation of Concordium's official domain concordium.com: contains the brand \"concordium\" plus extra words.",
+      "data": {
+        "matches": [
+          {
+            "project": "Concordium",
+            "official": "concordium.com",
+            "reason": "contains the brand \"concordium\" plus extra words"
+          }
+        ]
+      }
+    },
+    {
+      "check": "bait_words_in_domain",
+      "status": "warn",
+      "weight": 10,
+      "detail": "Domain name contains airdrop bait words: airdrop, claim."
+    },
+    {
+      "check": "concordium_badge",
+      "status": "info",
+      "weight": 0,
+      "detail": "No Concordium agent badge supplied. Neutral: most projects have none."
+    },
+    {
+      "check": "domain_age",
+      "status": "unknown",
+      "weight": 0,
+      "detail": "No RDAP record for concordium-airdrop-claim.xyz (domain may be unregistered, or its TLD has no public RDAP); age unknown.",
+      "source": "https://rdap.org/domain/concordium-airdrop-claim.xyz"
+    },
+    {
+      "check": "page_fetch",
+      "status": "unknown",
+      "weight": 0,
+      "detail": "Could not fetch https://concordium-airdrop-claim.xyz/claim (fetch failed); page content not checked.",
+      "source": "https://concordium-airdrop-claim.xyz/claim"
+    }
+  ]
+}

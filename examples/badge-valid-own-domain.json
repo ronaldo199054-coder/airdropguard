@@ -1,0 +1,69 @@
+{
+  "tool": "AirdropGuard",
+  "version": "0.1.0",
+  "checkedAt": "2026-11-19T01:52:40.859Z",
+  "input": {
+    "target": "https://tippingservice.co.uk/agents/vigilonmoltbook/",
+    "badgeId": "Mf22soLh1NuZYFgBK8iSs",
+    "fetchPage": false
+  },
+  "target": {
+    "kind": "url",
+    "raw": "https://tippingservice.co.uk/agents/vigilonmoltbook/",
+    "url": "https://tippingservice.co.uk/agents/vigilonmoltbook/",
+    "hostname": "tippingservice.co.uk",
+    "registrableDomain": "tippingservice.co.uk"
+  },
+  "riskScore": 20,
+  "verdict": "likely legit",
+  "confidence": "medium",
+  "summary": "Likely legit. Badge Mf22soLh1NuZYFgBK8iSs (token #484) is valid and Active on Concordium mainnet; agent card hash matches the on-chain metadata_hash (3 non-blocking format warning(s)).",
+  "evidence": [
+    {
+      "check": "lookalike_domain",
+      "status": "info",
+      "weight": 0,
+      "detail": "tippingservice.co.uk does not resemble any domain in the official reference list (10 projects)."
+    },
+    {
+      "check": "domain_age",
+      "status": "info",
+      "weight": 0,
+      "detail": "tippingservice.co.uk registered 185 days ago (2026-05-17 via Fasthosts Internet Ltd).",
+      "source": "https://rdap.org/domain/tippingservice.co.uk",
+      "data": {
+        "registered": "2026-05-17T21:16:08.347436Z",
+        "expires": "2027-05-17T21:16:08Z",
+        "registrar": "Fasthosts Internet Ltd",
+        "status": [
+          "active"
+        ],
+        "ageDays": 185
+      }
+    },
+    {
+      "check": "concordium_badge",
+      "status": "pass",
+      "weight": -20,
+      "detail": "Badge Mf22soLh1NuZYFgBK8iSs (token #484) is valid and Active on Concordium mainnet; agent card hash matches the on-chain metadata_hash (3 non-blocking format warning(s)).",
+      "source": "https://agent-registry-mcp.concordium.com/v1/check-badge/Mf22soLh1NuZYFgBK8iSs",
+      "data": {
+        "network": "mainnet",
+        "token_id": 484,
+        "token_address": "Mf22soLh1NuZYFgBK8iSs",
+        "badge_valid": true,
+        "status": "Active",
+        "owner_account": "4DDvjwdcLmTy1Ar9FCKKPMiABrS261TvyXJGr4n4ypuuogXeFF",
+        "agent_uri": "https://tippingservice.co.uk/agents/vigilonmoltbook/.well-known/agent-card.json",
+        "hash_matches_on_chain": true,
+        "badge_embedding": "legacy",
+        "issues": [
+          "warning: embedding",
+          "warning: contracts.cis8",
+          "warning: verify"
+        ],
+        "badge_domain": "tippingservice.co.uk"
+      }
+    }
+  ]
+}

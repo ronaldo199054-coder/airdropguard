@@ -1,0 +1,15 @@
+{
+  "_note": "Curated seed list of official domains / X handles used as the reference for lookalike detection. Hand-maintained for v0; verify entries before relying on them and replace with an authoritative, signed source in v1.",
+  "projects": [
+    { "name": "Concordium", "brands": ["concordium"], "domains": ["concordium.com"], "x": ["ConcordiumNet"] },
+    { "name": "Encode Club", "brands": ["encodeclub"], "domains": ["encode.club", "encodeclub.com"], "x": ["encodeclub"] },
+    { "name": "Uniswap", "brands": ["uniswap"], "domains": ["uniswap.org"], "x": ["Uniswap"] },
+    { "name": "Arbitrum", "brands": ["arbitrum"], "domains": ["arbitrum.io", "arbitrum.foundation"], "x": ["arbitrum"] },
+    { "name": "Optimism", "brands": ["optimism"], "domains": ["optimism.io"], "x": ["Optimism"] },
+    { "name": "LayerZero", "brands": ["layerzero"], "domains": ["layerzero.network"], "x": ["LayerZero_Core"] },
+    { "name": "Jupiter", "brands": ["jupiter"], "domains": ["jup.ag"], "x": ["JupiterExchange"] },
+    { "name": "zkSync", "brands": ["zksync"], "domains": ["zksync.io"], "x": ["zksync"] },
+    { "name": "Starknet", "brands": ["starknet"], "domains": ["starknet.io"], "x": ["Starknet"] },
+    { "name": "EigenLayer", "brands": ["eigenlayer"], "domains": ["eigenlayer.xyz"], "x": ["eigenlayer"] }
+  ]
+}

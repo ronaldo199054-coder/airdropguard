@@ -1,0 +1,26 @@
+{
+  "name": "airdropguard",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AirdropGuard: airdrop verification agent with Concordium Agent Registry badge signal (testnet hackathon build)",
+  "type": "module",
+  "bin": {
+    "airdropguard": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check": "tsx src/cli.ts",
+    "serve": "tsx src/server.ts",
+    "test": "tsx --test test/*.test.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  }
+}
