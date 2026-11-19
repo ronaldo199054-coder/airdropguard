@@ -60,17 +60,33 @@ test("3b. badge revoked (409) → critical, never 'likely legit' even on officia
   assert.ok(r.riskScore >= 60);
 });
 
-test("3c. badge 404 is neutral; hash mismatch is a strong warning; borrowed badge is flagged", async () => {
+test("3c. badge 404 is neutral; hash mismatch is tampering only if pinned; borrowed badge is flagged", async () => {
   const d404 = mockDeps([{ match: (u) => u.includes("/v1/check-badge/"), status: 404, json: { error: "not_found" } }]);
   const r404 = await runCheck({ target: "SomeProject", badgeId: "Mf22soLh1NuZYFgBK8iSs" }, d404);
   assert.equal(r404.evidence.find((e) => e.check === "concordium_badge")!.weight, 0);
 
   const mismatch = { ...VALID_BADGE, badge_valid: false, checks: { ...VALID_BADGE.checks, hash_matches_on_chain: false } };
-  const dmm = mockDeps([{ match: (u) => u.includes("/v1/check-badge/"), json: mismatch }]);
-  const rmm = await runCheck({ target: "SomeProject", badgeId: "Mf22soLh1NuZYFgBK8iSs" }, dmm);
-  const bm = rmm.evidence.find((e) => e.check === "concordium_badge")!;
+  const hist = (names: string[]) => ({ jsonrpc: "2.0", id: 1, result: { content: [{ type: "text", text: JSON.stringify({ events: names.map((event_name) => ({ event_name })) }) }] } });
+  const mm = async (history?: unknown) => {
+    const routes: any[] = [{ match: (u: string) => u.includes("/v1/check-badge/"), json: mismatch }];
+    if (history) routes.push({ match: (u: string) => u.endsWith("/mcp"), json: history });
+    const r = await runCheck({ target: "SomeProject", badgeId: "Mf22soLh1NuZYFgBK8iSs" }, mockDeps(routes));
+    return r.evidence.find((e) => e.check === "concordium_badge")!;
+  };
+  // pinned with setAgentURI, then changed → tampering
+  const bm = await mm(hist(["Mint", "Registered", "URIUpdated"]));
   assert.equal(bm.status, "fail");
   assert.equal(bm.critical, true);
+  // never pinned (web-app random hash, e.g. testnet #1265) → unverified, not tampering
+  const bn = await mm(hist(["Mint", "Registered", "AgentWalletSet"]));
+  assert.equal(bn.status, "warn");
+  assert.equal(bn.weight, 10);
+  assert.ok(!bn.critical);
+  assert.match(bn.detail, /UNVERIFIED/);
+  // history unreadable → unverified, heavier warning
+  const bu = await mm();
+  assert.equal(bu.status, "warn");
+  assert.equal(bu.weight, 20);
 
   const dborrow = mockDeps([
     { match: (u) => u.includes("/v1/check-badge/"), json: VALID_BADGE },

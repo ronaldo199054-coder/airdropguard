@@ -69,7 +69,18 @@ export async function checkBadge(
     return { check: "concordium_badge", status: "fail", weight: 40, critical: true, detail: `Badge ${badgeId} is not Active on-chain (status ${body.on_chain?.status ?? "unknown"}).`, source: url, data };
   }
   if (checks.hash_matches_on_chain === false) {
-    return { check: "concordium_badge", status: "fail", weight: 35, critical: true, detail: `Agent card at ${agentUri} does NOT match the SHA-256 anchored on-chain — the card was altered after registration.`, source: url, data };
+    // A mismatch is only evidence of tampering if the owner ever pinned a hash with setAgentURI.
+    // The official registry web app writes a RANDOM metadata_hash at registration (app.bundle.js,
+    // generateMetadataHashHex), so a never-pinned agent mismatches by default.
+    const pinned = await everPinned(deps, body.network ?? opts.network, body.token_id);
+    data.hash_ever_pinned = pinned;
+    if (pinned === true) {
+      return { check: "concordium_badge", status: "fail", weight: 35, critical: true, detail: `Agent card at ${agentUri} does NOT match the SHA-256 the owner pinned on-chain with setAgentURI: the card changed after it was pinned.`, source: url, data };
+    }
+    if (pinned === false) {
+      return { check: "concordium_badge", status: "warn", weight: 10, detail: `Badge ${badgeId} is UNVERIFIED: its card hash was never pinned on-chain (registered without setAgentURI; the registry web app stores a random hash). Not proof of tampering, but the badge vouches for nothing yet.`, source: url, data };
+    }
+    return { check: "concordium_badge", status: "warn", weight: 20, detail: `Badge ${badgeId} is UNVERIFIED: agent card does not match the on-chain hash, and the registry history could not be read to tell a never-pinned card from an altered one.`, source: url, data };
   }
   if (body.badge_valid !== true) {
     return { check: "concordium_badge", status: "warn", weight: 10, detail: `Badge ${badgeId} exists but failed validation (${(body.issues ?? []).filter((i: any) => i.severity === "error").map((i: any) => i.message).join("; ") || "see issues"}).`, source: url, data };
@@ -100,4 +111,28 @@ export async function checkBadge(
     source: url,
     data,
   };
+}
+
+/** true = a URIUpdated event exists after registration; false = only registration events; undefined = unknown. */
+async function everPinned(deps: Deps, network: string | undefined, tokenId: unknown): Promise<boolean | undefined> {
+  if (tokenId === undefined || tokenId === null || !network) return undefined;
+  const url = `${deps.registryUrl}/mcp`;
+  try {
+    const res = await timedFetch(deps, url, {
+      method: "POST",
+      headers: { "content-type": "application/json", accept: "application/json, text/event-stream" },
+      body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/call", params: { name: "agent_history", arguments: { network, token_id: Number(tokenId) } } }),
+    });
+    if (!res.ok) return undefined;
+    let raw = await res.text();
+    if (raw.startsWith("event:") || raw.includes("\ndata: ") || raw.startsWith("data: ")) {
+      raw = raw.split("\n").filter((l) => l.startsWith("data: ")).map((l) => l.slice(6)).join("");
+    }
+    const text = JSON.parse(raw)?.result?.content?.[0]?.text;
+    const events: Array<{ event_name?: string }> = JSON.parse(text)?.events;
+    if (!Array.isArray(events)) return undefined;
+    return events.some((e) => e.event_name === "URIUpdated");
+  } catch {
+    return undefined;
+  }
 }
